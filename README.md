@@ -34,7 +34,7 @@ The framework comprises four components:
 3. **Learned multi-score fusion:** Five complementary cues—maximum logit score, energy-related knownness, maximum softmax probability, logit margin, and prototype distance—are standardized and combined through a linear fusion model learned on held-out source calibration data.
 4. **Unknown-subset-aware global threshold calibration:** One rejection threshold is selected by maximizing balanced open-set accuracy averaged over unknown-label subsets. The fusion parameters, normalization statistics, and threshold are subsequently fixed for target-corpus evaluation.
 
-Given a fused knownness score, an input is assigned its predicted known class when its score is greater than or equal to the calibrated threshold; otherwise, it is rejected as unknown. The unknown label is encoded as `-1`.
+Given a fused knownness score, an input is assigned its predicted known class when its score is greater than or equal to the calibrated threshold; otherwise, it is rejected as unknown. 
 
 > **Final method:** `osr.method = learned_fusion_subset_tau`. BioPROF calibrates a single global threshold. Class-wise alternatives retained in the repository are comparison variants.
 
@@ -47,7 +47,7 @@ The following results are reported in the accompanying manuscript. All values ar
 | S1 → S2 | 75.98 | 79.85 ± 6.79 | 77.91 ± 3.40 | 85.40 | 70.53 | 80.81 |
 | S2 → S1 | 81.07 | 71.86 ± 6.87 | 76.46 ± 3.44 | 85.82 | 67.34 | 82.29 |
 
-`ACC_U` and balanced `ACC` are reported as mean ± standard deviation over all target unknown-label subsets of size three. These standard deviations reflect variation in unknown-class composition, not variation across training seeds.
+`ACC_U` and balanced `ACC` are reported as mean ± standard deviation over all target unknown-label subsets of size three. These standard deviations reflect variation in unknown-class composition.
 
 Balanced open-set accuracy is defined as:
 
@@ -149,7 +149,7 @@ Audio discovery is recursive. Recognized file extensions are `.wav`, `.flac`, `.
 
 ### Class Labels
 
-The benchmark contains bird vocalizations and other acoustic categories. Its eight known labels therefore represent acoustic classes rather than eight distinct bird species:
+The benchmark contains bird vocalizations and other acoustic categories:
 
 ```text
 AMCR, AMRO, BLJA, ECMC, ECMK, ENGE, FFCR, RNFL
@@ -169,8 +169,6 @@ Preserve the label identifiers and their ordering in the supplied configurations
 For each transfer direction:
 
 - Source known recordings are divided into 90% training and 10% validation.
-- Source unknown recordings are divided into disjoint 50% OE and 20% calibration partitions.
-- Remaining source unknown recordings are unused.
 - Target known recordings and the selected target unknown pools are used exclusively for testing.
 - Fusion learning and threshold calibration use the held-out source validation pool.
 
@@ -185,9 +183,9 @@ The manuscript reports the following numbers of 8-second clips:
 | S1 → S2 | 13,137 | 1,461 | 3,266 | 1,306 | 26,710 | 4,079 |
 | S2 → S1 | 24,039 | 2,670 | 2,039 | 816 | 14,598 | 6,533 |
 
-Audio is processed at 32 kHz through Bird-MAE's native feature-extraction pipeline. Audio augmentation is disabled in the proposed configurations.
+Audio is processed at 32 kHz through Bird-MAE's native feature-extraction pipeline. 
 
-Audio recordings are not bundled with this repository. Corpus acquisition details and the exact recording inventory remain to be supplied; see [DATA.md](docs/DATA.md).
+Audio recordings are not bundled with this repository. Corpus acquisition details and the exact recording are referred to “Morgan MM, Braasch J. Open set classification strategies for long-term environmental field recordings for bird species recognition. The Journal of the Acoustical Society of America. 2022 Jun 1;151(6):4028-38. Zenodo. https://zenodo.org/records/6456604”.
 
 ### Configure Asset Paths
 
@@ -427,30 +425,16 @@ For each experimental run, retain:
 
 The proposed configurations enable deterministic training. Nevertheless, hardware, GPU kernels, library versions, and upstream model code can affect numerical reproducibility.
 
-Syntax and configuration checks do not establish agreement with manuscript results. Full reproduction requires the external audio recordings and pretrained model assets.
-
-See [REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) and [METHOD_TO_CODE.md](docs/METHOD_TO_CODE.md) for additional details.
-
-## Resource Availability
-
-| Resource | Status |
-|:--|:--|
-| Source code and experiment configurations | Included |
-| Reproduction and visualization utilities | Included |
-| S1/S2 recordings and exact split manifests | Not included |
-| Pretrained Bird-MAE weights | Available separately from the upstream project |
-| Trained BioPROF checkpoints | Not included |
-| Generated experimental reports | Not included |
 
 ## Citation
 
 If you use BioPROF in your research, please cite the accompanying manuscript when its public bibliographic record becomes available. Please also acknowledge the original Bird-MAE and dataset publications as appropriate.
 
-Project metadata are provided in [CITATION.cff](CITATION.cff). Complete authorship and publication details will be updated when confirmed.
+Complete authorship and publication details will be updated when confirmed.
 
 ## License
 
-The project code license is pending confirmation by the rights holders. See [LICENSE_PENDING.md](LICENSE_PENDING.md).
+The project code license is pending confirmation by the rights holders.
 
 Third-party datasets, pretrained models, and upstream custom code remain subject to their respective terms.
 
@@ -461,5 +445,3 @@ BioPROF builds on the pretrained [Bird-MAE](https://huggingface.co/DBD-research-
 ## Questions and Contributions
 
 Please use GitHub Issues for questions and bug reports. Include the relevant configuration, command, software environment, and error message to help reproduce the issue.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidance.
