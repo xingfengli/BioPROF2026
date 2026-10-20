@@ -1,0 +1,80 @@
+{
+  "experiment_name": "s1s2_birdmae_noaug_final_main_classwise_tau",
+  "data_root": "data/SCorpora",
+  "scenario": "s1s2",
+  "train_site": "S1",
+  "test_site": "S2",
+  "known_labels": [
+    "AMCR",
+    "AMRO",
+    "BLJA",
+    "ECMC",
+    "ECMK",
+    "ENGE",
+    "FFCR",
+    "RNFL"
+  ],
+  "unknown_labels": [
+    "BAWW",
+    "BCCH",
+    "BUBP",
+    "EAPH",
+    "RBNU"
+  ],
+  "manifest_path": "birdosr_baseline/outputs/s1s2_birdmae_noaug_mls/manifest.csv",
+  "output_dir": "birdosr_baseline/outputs/s1s2_birdmae_noaug_final_main_classwise_tau",
+  "seed": 26,
+  "split": {
+    "train_fraction": 0.9,
+    "val_fraction": 0.1,
+    "unknown_val_fraction": 0.2
+  },
+  "audio": {
+    "sample_rate": 32000,
+    "clip_seconds": 8.0,
+    "n_mels": 128,
+    "n_fft": 2048,
+    "hop_length": 512,
+    "frontend": "birdmae"
+  },
+  "augmentation": {
+    "random_gain_db": 0.0,
+    "time_shift_fraction": 0.0,
+    "time_mask_param": 0,
+    "freq_mask_param": 0,
+    "background_noise_prob": 0.0,
+    "background_noise_snr_db": [
+      5.0,
+      20.0
+    ],
+    "background_noise_labels": [],
+    "mixup_alpha": 0.0
+  },
+  "model": {
+    "backbone": "birdmae:models/Bird-MAE-Base",
+    "pretrained": true,
+    "dropout": 0.2,
+    "finetune_mode": "linear_probe"
+  },
+  "training": {
+    "epochs": 50,
+    "batch_size": 16,
+    "optimizer": "adamw",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "label_smoothing": 0.1,
+    "class_balanced_sampler": true,
+    "num_workers": 4,
+    "deterministic": true
+  },
+  "osr": {
+    "method": "classwise_tau",
+    "score": "mls",
+    "msp_temperature": 1.0
+  },
+  "ablation_label": "FinalMain: class-wise tau",
+  "ablation_group": "final_main_evolution",
+  "ablation_status": "existing_reused",
+  "ablation_note": "Covered by 01 main evolution; re-evaluated into final suite output.",
+  "source_checkpoint_experiment": "s1s2_birdmae_noaug_mls"
+}
