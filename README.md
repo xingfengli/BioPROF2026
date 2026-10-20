@@ -27,7 +27,7 @@ This repository contains the implementation and experimental configurations acco
 
 Acoustic monitoring systems encounter recording conditions and sound categories that differ from their training data. BioPROF addresses this setting through source-only training and calibration: model optimization, score-fusion learning, and threshold selection use source-corpus data, while target-corpus recordings are reserved exclusively for evaluation.
 
-![BioPROF Blockdiagram](https://github.com/xingfengli/BioPROF2026/blob/main/birdosr_baseline/BioPROFR3.pdf)
+![BioPROF Blockdiagram](https://github.com/xingfengli/BioPROF2026/blob/main/birdosr_baseline/BioPROFR3.png)
 
 The framework comprises four components:
 
