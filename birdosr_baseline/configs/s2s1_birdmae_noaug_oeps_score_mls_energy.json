@@ -1,0 +1,112 @@
+{
+  "experiment_name": "s2s1_birdmae_noaug_oeps_score_mls_energy",
+  "data_root": "data/SCorpora",
+  "scenario": "s2s1",
+  "train_site": "S2",
+  "test_site": "S1",
+  "known_labels": [
+    "AMCR",
+    "AMRO",
+    "BLJA",
+    "ECMC",
+    "ECMK",
+    "ENGE",
+    "FFCR",
+    "RNFL"
+  ],
+  "unknown_labels": [
+    "DDCC",
+    "DGBR",
+    "DOWO",
+    "EGSK",
+    "NOCA",
+    "RCCR",
+    "SREN",
+    "WBNU"
+  ],
+  "manifest_path": "birdosr_baseline/outputs/s2s1_birdmae_noaug_oe_protosphere/manifest.csv",
+  "output_dir": "birdosr_baseline/outputs/s2s1_birdmae_noaug_oeps_score_mls_energy",
+  "seed": 26,
+  "split": {
+    "train_fraction": 0.9,
+    "val_fraction": 0.1,
+    "unknown_val_fraction": 0.2,
+    "unknown_oe_fraction": 0.5
+  },
+  "audio": {
+    "sample_rate": 32000,
+    "clip_seconds": 8.0,
+    "n_mels": 128,
+    "n_fft": 2048,
+    "hop_length": 512,
+    "frontend": "birdmae"
+  },
+  "augmentation": {
+    "random_gain_db": 0.0,
+    "time_shift_fraction": 0.0,
+    "time_mask_param": 0,
+    "freq_mask_param": 0,
+    "background_noise_prob": 0.0,
+    "background_noise_snr_db": [
+      5.0,
+      20.0
+    ],
+    "background_noise_labels": [],
+    "mixup_alpha": 0.0
+  },
+  "model": {
+    "backbone": "birdmae:models/Bird-MAE-Base",
+    "pretrained": true,
+    "dropout": 0.2,
+    "finetune_mode": "linear_probe"
+  },
+  "training": {
+    "epochs": 50,
+    "batch_size": 16,
+    "optimizer": "adamw",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "label_smoothing": 0.1,
+    "class_balanced_sampler": true,
+    "num_workers": 4,
+    "deterministic": true,
+    "oe": {
+      "enabled": true,
+      "split": "oe",
+      "batch_size": 16,
+      "energy_weight": 0.1,
+      "uniform_weight": 0.1,
+      "distance_weight": 0.01,
+      "distance_margin": 5.0
+    }
+  },
+  "osr": {
+    "method": "learned_fusion_subset_classwise_tau",
+    "scores": [
+      "mls",
+      "energy"
+    ],
+    "msp_temperature": 1.0,
+    "learned_fusion": {
+      "steps": 2000,
+      "learning_rate": 0.05,
+      "l2": 0.001,
+      "nonnegative": false
+    },
+    "unknown_subset_size": 3,
+    "subset_tau_objective": "ACC_subset_mean",
+    "subset_tau_max_candidates": 200,
+    "subset_tau_passes": 2
+  },
+  "ablation_label": "ScoreAblation: MLS + Energy",
+  "ablation_group": "scoring_ablation",
+  "osr_training": {
+    "method": "protosphere",
+    "prototype_loss_weight": 0.1,
+    "prototype_margin": 1.0,
+    "radius_loss_weight": 0.05,
+    "radius_reg_weight": 0.0001,
+    "radius_init": 1.0
+  },
+  "source_checkpoint_experiment": "s2s1_birdmae_noaug_oe_protosphere"
+}
